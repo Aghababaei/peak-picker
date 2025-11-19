@@ -12,6 +12,12 @@ PeakPicker uses machine learning to automate the identification of flood peaks i
 - Calculate return periods when not available
 - Generate visualizations of hydrographs with detected peaks
 
+## Background
+
+This project originated during research for the paper "How Well Do U.S. National Water Model Short-Range Forecasts Predict Flood Event Timing and Magnitude?" While analyzing flood events for selected gages, we needed to optimally identify peaks in hydrographs that corresponded to actual flood events with specific characteristics. The manual labeling process for 306 gages proved to be time-intensive and challenging.
+
+To streamline this process and enable analysis of larger datasets in future studies, we developed PeakPicker—a machine learning model that automates the identification of event-related peaks in streamflow hydrographs. What began as an internal tool has evolved into a robust system that can assist researchers and practitioners in efficiently detecting flood peaks across extensive gage networks.
+
 ## Getting Started
 
 Choose your use case:
@@ -27,7 +33,7 @@ If you want to see how the model works, train it, and test on sample data:
 
 2. **Read the [QUICKSTART.md](QUICKSTART.md)** for step-by-step tutorial
 
-3. **Check [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)** for installation help
+3. **Check [INSTALLATION.md](INSTALLATION.md)** for installation help
 
 ### 🚀 **Production Use** (Process Your Own Data)
 
@@ -67,7 +73,8 @@ peakpicker/
 │   ├── peakpicker.py               # Main script for sample data
 │   ├── requirements.txt            # Python dependencies
 │   ├── venv/                       # Virtual environment
-│   ├── gages/                      # Sample gage data files
+│   ├── gages/                      # Full sample gage data files (300+ gages)
+│   ├── gages_samples/              # 10 sample gages for quick testing
 │   │   └── *_Obs.csv              # Format: datetime_utc, discharge_cms
 │   ├── manual_added_peaks.csv      # Manually labeled peaks
 │   ├── return_periods.csv          # Return period values
@@ -85,8 +92,8 @@ peakpicker/
 └── Documentation
     ├── README.md                   # This file
     ├── QUICKSTART.md               # Step-by-step tutorial
-    ├── SETUP_INSTRUCTIONS.md       # Installation help
-    └── PROJECT_SUMMARY.md          # Technical overview
+    ├── INSTALLATION.md             # Installation & setup guide
+    └── PROJECT_RUNNER_GUIDE.md     # Production usage guide
 ```
 
 ## Installation
