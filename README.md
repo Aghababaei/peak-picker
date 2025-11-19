@@ -39,9 +39,9 @@ If you want to see how the model works, train it, and test on sample data:
 
 If you have your own gage data to process in a custom project folder:
 
-1. **Use the project runner**: `run_project.py`
+1. **Use the project runner**: `project/run_project.py`
 
-2. **Read [PROJECT_RUNNER_GUIDE.md](PROJECT_RUNNER_GUIDE.md)** for complete instructions on:
+2. **Read [project/PROJECT_RUNNER_GUIDE.md](project/PROJECT_RUNNER_GUIDE.md)** for complete instructions on:
    - Setting up your project folder structure
    - Preparing your data files (gages, return periods, mappings)
    - Running batch processing on multiple gages
@@ -50,13 +50,13 @@ If you have your own gage data to process in a custom project folder:
 3. **Quick example**:
    ```bash
    # Process all gages in your project folder
-   python run_project.py --project-dir /path/to/your/project
+   python project/run_project.py --project-dir /path/to/your/project
 
    # Process a single gage
-   python run_project.py --gage 01200600
+   python project/run_project.py --gage 01200600
    ```
 
-**Key Difference**: The main `peakpicker.py` script uses the included sample data, while `run_project.py` is designed for processing your own custom datasets with your own folder structure.
+**Key Difference**: The main `peakpicker.py` script uses the included sample data, while `project/run_project.py` is designed for processing your own custom datasets with your own folder structure.
 
 ---
 
@@ -81,9 +81,9 @@ peakpicker/
 │   └── plots/                      # Generated plots (created automatically)
 │
 ├── Production Runner (for your data)
-│   ├── run_project.py              # Project runner script
-│   ├── PROJECT_RUNNER_GUIDE.md     # Complete usage guide
-│   └── project/                    # Your custom project folder
+│   └── project/                    # Project folder with runner and data
+│       ├── run_project.py          # Project runner script
+│       ├── PROJECT_RUNNER_GUIDE.md # Complete usage guide
 │       ├── gages/                  # Your gage CSV files
 │       ├── data/                   # Your return periods & mappings
 │       ├── plots/                  # Output plots (auto-created)
@@ -92,8 +92,7 @@ peakpicker/
 └── Documentation
     ├── README.md                   # This file
     ├── QUICKSTART.md               # Step-by-step tutorial
-    ├── INSTALLATION.md             # Installation & setup guide
-    └── PROJECT_RUNNER_GUIDE.md     # Production usage guide
+    └── INSTALLATION.md             # Installation & setup guide
 ```
 
 ## Installation
@@ -469,18 +468,18 @@ your_project/
 
 ```bash
 # Process all gages
-python run_project.py --project-dir /path/to/your_project
+python project/run_project.py --project-dir /path/to/your_project
 
 # Process single gage
-python run_project.py --project-dir /path/to/your_project --gage 01200600
+python project/run_project.py --project-dir /path/to/your_project --gage 01200600
 
 # Adjust sensitivity
-python run_project.py --project-dir /path/to/your_project --threshold 0.6
+python project/run_project.py --project-dir /path/to/your_project --threshold 0.6
 ```
 
 ### Complete Documentation
 
-See **[PROJECT_RUNNER_GUIDE.md](PROJECT_RUNNER_GUIDE.md)** for:
+See **[project/PROJECT_RUNNER_GUIDE.md](project/PROJECT_RUNNER_GUIDE.md)** for:
 - Detailed setup instructions
 - Data file format specifications
 - Batch processing examples

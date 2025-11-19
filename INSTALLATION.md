@@ -163,7 +163,7 @@ After successful installation:
 1. **Read QUICKSTART.md** for usage tutorial
 2. **Train the model**: `python peakpicker.py --train`
 3. **Test on sample data**: `python peakpicker.py --gage 03408500`
-4. **Process your data**: See PROJECT_RUNNER_GUIDE.md
+4. **Process your data**: See project/PROJECT_RUNNER_GUIDE.md
 
 ## Uninstallation
 
