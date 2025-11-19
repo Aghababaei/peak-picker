@@ -14,20 +14,14 @@ venv/
 ENV/
 env/
 
-# Model files
-*.pkl
+# Model files (keeping .pkl for distribution)
+# *.pkl
 *.joblib
 
-# Data outputs
-*_detected_peaks.csv
-plots/*.png
-plots/
-project/plots/
-project/results/
-
-# Project-specific data folders
-project/
-gages2/
+# Data outputs (keeping for examples)
+# *_detected_peaks.csv
+# plots/
+# project/
 
 # Large data files (keep sample data only)
 gages/*_Obs.csv
