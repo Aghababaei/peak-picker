@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# Model files
+*.pkl
+*.joblib
+
+# Data outputs
+*_detected_peaks.csv
+plots/*.png
+plots/
+project/plots/
+project/results/
+
+# Project-specific data folders
+project/
+gages2/
+
+# Large data files (keep sample data only)
+gages/*_Obs.csv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
