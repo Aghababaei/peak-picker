@@ -6,8 +6,13 @@ Processes gage files from project folder with custom return periods
 import pandas as pd
 import numpy as np
 from pathlib import Path
+import sys
 import warnings
 warnings.filterwarnings('ignore')
+
+# Add parent directory to path to import PeakPicker modules
+parent_dir = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(parent_dir))
 
 # Import existing PeakPicker modules
 from feature_engineering import FeatureEngineer
@@ -27,11 +32,22 @@ class ProjectPeakPicker:
         Args:
             project_dir: Path to project directory
         """
-        self.project_dir = Path(project_dir)
+        # Resolve project directory - if relative, resolve from script location
+        if Path(project_dir).is_absolute():
+            self.project_dir = Path(project_dir)
+        else:
+            # If script is in project dir, use current dir; otherwise use specified path
+            script_parent = Path(__file__).resolve().parent
+            if script_parent.name == 'project':
+                self.project_dir = script_parent
+            else:
+                self.project_dir = script_parent / project_dir
+
         self.gages_dir = self.project_dir / 'gages'
         self.data_dir = self.project_dir / 'data'
         self.plots_dir = self.project_dir / 'plots'
         self.results_dir = self.project_dir / 'results'
+        self.root_dir = self.project_dir.parent  # Parent directory for model files
 
         # Create output directories if they don't exist
         self.plots_dir.mkdir(parents=True, exist_ok=True)
@@ -95,6 +111,7 @@ class ProjectPeakPicker:
         """
         Load return periods by COMID (feature_id)
         Returns dict mapping COMID -> return period dictionary
+        Note: Converts from m³/s (NWM) to cfs
         """
         rp_file = self.data_dir / 'return_periods.csv'
 
@@ -104,18 +121,22 @@ class ProjectPeakPicker:
 
         df = pd.read_csv(rp_file)
 
+        # Conversion factor: 1 m³/s = 35.3147 ft³/s (cfs)
+        CMS_TO_CFS = 35.3147
+
         # Create dictionary mapping COMID to return periods
         rp_dict = {}
         for _, row in df.iterrows():
             # Convert to int first to remove .0, then to string
             comid = str(int(float(row['feature_id']))).strip()
+            # Convert all return period values from m³/s to cfs
             rp_dict[comid] = {
-                'return_period_2': float(row['return_period_2']),
-                'return_period_5': float(row['return_period_5']),
-                'return_period_10': float(row['return_period_10']),
-                'return_period_25': float(row['return_period_25']),
-                'return_period_50': float(row['return_period_50']),
-                'return_period_100': float(row['return_period_100'])
+                'return_period_2': float(row['return_period_2']) * CMS_TO_CFS,
+                'return_period_5': float(row['return_period_5']) * CMS_TO_CFS,
+                'return_period_10': float(row['return_period_10']) * CMS_TO_CFS,
+                'return_period_25': float(row['return_period_25']) * CMS_TO_CFS,
+                'return_period_50': float(row['return_period_50']) * CMS_TO_CFS,
+                'return_period_100': float(row['return_period_100']) * CMS_TO_CFS
             }
 
         return rp_dict
@@ -152,14 +173,19 @@ class ProjectPeakPicker:
         """Load trained model"""
         model_file = Path(model_path)
 
+        # If relative path, check both current dir and parent (root) dir
+        if not model_file.is_absolute() and not model_file.exists():
+            model_file = self.root_dir / model_path
+
         if not model_file.exists():
             raise FileNotFoundError(
                 f"Model file not found: {model_path}\n"
+                f"Searched in: {Path(model_path).absolute()} and {self.root_dir / model_path}\n"
                 f"Please train a model first using: python peakpicker.py --train"
             )
 
         self.model = PeakDetectionModel.load_model(str(model_file))
-        print(f"Model loaded from {model_path}")
+        print(f"Model loaded from {model_file}")
 
     def load_gage_file(self, file_path: Path) -> pd.DataFrame:
         """
